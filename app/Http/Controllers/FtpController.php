@@ -27,7 +27,7 @@ class FtpController extends Controller
         try {
             $stream = Storage::disk('ftp')->getDriver()->readStream($imageName);
             $tempPath = $imageName; // Caminho temporário
-            Storage::disk('local')->put($tempPath, stream_get_contents($stream)); // Salva localmente
+            Storage::disk('local')->put("public/" . $tempPath, stream_get_contents($stream)); // Salva localmente
             
             return $tempPath; // Retorna o caminho temporário
         } catch (\Exception $e) {

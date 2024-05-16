@@ -45,12 +45,11 @@ class ParkingController extends Controller
         $inputs = $request->all();
         $plate = $inputs['plate'];
         $datetime = $inputs['datetime'];
-        $data = Parking::where('plate', $plate)->get();
-        $startOfDay = date('Y-m-d 00:00:00', strtotime($datetime));
-        $endOfDay = date('Y-m-d 23:59:59', strtotime($datetime));
+        $startOfDay = date('Y-m-d\T00:00:00', strtotime($datetime));
+        $endOfDay = date('Y-m-d\T23:59:59', strtotime($datetime));
         if ($datetime == null) {
-            $startOfDay = date('Y-m-d 00:00:00', strtotime('today'));
-            $endOfDay = date('Y-m-d 23:59:59', strtotime('today'));
+            $startOfDay = date('Y-m-d00:00:00', strtotime('today'));
+            $endOfDay = date('Y-m-d23:59:59', strtotime('today'));
         }
         $data = Parking::where('plate', $plate)->whereBetween('entry_date', [$startOfDay, $endOfDay])->get();
         $response = [];
@@ -62,7 +61,7 @@ class ParkingController extends Controller
                 'file' => FtpController::getImage($item->file),
             ];
         };
-        // return $response[0]['file'];
+        // return $response;
         return view('parking.show')->with('data', $response)->with('plate', $plate)->with('datetime', $datetime);
     }
 
