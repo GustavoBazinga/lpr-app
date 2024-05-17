@@ -10,26 +10,31 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Dados do provável proprietário</h1>
-                    <div class="flex gap-4 items-center">
+
+                        @foreach ($access as $item)
+                        <div class="flex gap-4 items-center">
                         <div class="w-1/4">
                             <x-input-label>
                                 Matrícula
                             </x-input-label>
-                            <x-text-input name="register" value="<retorno-api-triade>" readonly />
+                            <x-text-input name="register" value="{{ $item['Title'] }}" readonly />
                         </div>
-                       
                         <div class="w-1/4">
                             <x-input-label>
                                 Nome
                             </x-input-label>
-                            <x-text-input name="name" value="<retorno-api-triade>" readonly />
+                            <x-text-input name="name" value="{{ $item['Name'] }}" readonly/>
                         </div>
                         <div class="w-1/4">
                             <x-input-label>
                                 Telefone
                             </x-input-label>
-                            <x-text-input name="telephone" value="<retorno-api-triade>" readonly />
+                            <x-text-input name="telephone" value="{{ $item['MobilePhone'] }}" readonly />
                         </div>
+                        <br>
+                        <hr>
+                        </div>
+                        @endforeach
                         <div class="w-1/4">
                             <x-input-label>
                                 Placa do Veículo

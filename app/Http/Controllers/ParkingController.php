@@ -8,6 +8,7 @@ use App\Http\Requests\StoreParkingRequest;
 use App\Http\Requests\UpdateParkingRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\FtpController;
+use App\Http\Controllers\AccessController;
 
 class ParkingController extends Controller
 {
@@ -16,9 +17,13 @@ class ParkingController extends Controller
      */
     public function search()
     {
-        # Pega todos os registros
-        $data = Parking::all();
-        return view('parking.search');
+        $startOfDay = date('Y-m-d\T00:00:00');
+        $endOfDay = date('Y-m-d\T23:59:59');
+        $todayParking = Parking::whereBetween('entry_date', [$startOfDay, $endOfDay])->get();
+
+        $todayParkingCount = $todayParking->count();
+        $todayParkingNoPlate = $todayParking->where('plate', 'Sem placa')->count();
+        return view('parking.search')->with('todayParkingCount', $todayParkingCount)->with('todayParkingNoPlate', $todayParkingNoPlate);
     }
 
     /**
@@ -48,10 +53,18 @@ class ParkingController extends Controller
         $startOfDay = date('Y-m-d\T00:00:00', strtotime($datetime));
         $endOfDay = date('Y-m-d\T23:59:59', strtotime($datetime));
         if ($datetime == null) {
-            $startOfDay = date('Y-m-d00:00:00', strtotime('today'));
-            $endOfDay = date('Y-m-d23:59:59', strtotime('today'));
+            $startOfDay = date('Y-m-d\T00:00:00', strtotime('today'));
+            $endOfDay = date('Y-m-d\T23:59:59', strtotime('today'));
         }
         $data = Parking::where('plate', $plate)->whereBetween('entry_date', [$startOfDay, $endOfDay])->get();
+        
+        
+        
+        
+        
+    
+        
+        $accessData = [];
         $response = [];
         foreach ($data as $item) {
             $response[] = [
@@ -59,10 +72,10 @@ class ParkingController extends Controller
                 'color' => $item->color,
                 'entry_date' => $item->entry_date,
                 'file' => FtpController::getImage($item->file),
+                'access' => AccessController::findAccessByTime($item->entry_date)
             ];
         };
-        // return $response;
-        return view('parking.show')->with('data', $response)->with('plate', $plate)->with('datetime', $datetime);
+        return view('parking.show')->with('data', $response)->with('plate', $plate)->with('datetime', $datetime)->with('access', $accessData);
     }
 
     /**
