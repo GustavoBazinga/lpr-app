@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateParkingRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\FtpController;
 use App\Http\Controllers\AccessController;
+use DateTime;
 
 class ParkingController extends Controller
 {
@@ -57,25 +58,32 @@ class ParkingController extends Controller
             $endOfDay = date('Y-m-d\T23:59:59', strtotime('today'));
         }
         $data = Parking::where('plate', $plate)->whereBetween('entry_date', [$startOfDay, $endOfDay])->get();
-        
-        
-        
-        
-        
-    
-        
+        $car = [
+            'plate' => $plate,
+            'datetime' => $datetime
+        ];
+
         $accessData = [];
         $response = [];
         foreach ($data as $item) {
+            //Split date by T
+            $temp_date = explode('T', $item->entry_date);
+            $temp_date[1] = str_replace('-', ':', $temp_date[1]);
+            $date = $temp_date[0] . "T" . $temp_date[1];
+            $date = new Datetime($date);
+            $date = $date->format('H:i:s d/m/Y');
             $response[] = [
-                'plate' => $item->plate,
-                'color' => $item->color,
-                'entry_date' => $item->entry_date,
+                //Date format HH:mm:ss dd/MM/yyyy
+                'entry_date' => $date,
                 'file' => FtpController::getImage($item->file),
                 'access' => AccessController::findAccessByTime($item->entry_date)
             ];
+            $car['color'] = $item->color;
         };
-        return view('parking.show')->with('data', $response)->with('plate', $plate)->with('datetime', $datetime)->with('access', $accessData);
+        //Revert array to show the last access first
+        $response = array_reverse($response);
+
+        return view('parking.show')->with('data', $response)->with('plate', $plate)->with('datetime', $datetime)->with('access', $accessData)->with('car', $car);
     }
 
     /**

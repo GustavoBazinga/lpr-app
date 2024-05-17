@@ -28,6 +28,11 @@ class AccessController extends Controller
 
         $data = Access::whereBetween('Date', [$startTime, $endTime])->whereIn('Ratchet', ['1116448', '5124723', '7061845'])->get();
 
+        //Order the data by time
+        $data = $data->sortBy('Date');
+
+
+
         $persons = [];
         foreach ($data as $access) {
             if ($access->Authorization){

@@ -18,7 +18,7 @@
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('parking.search')" :active="request()->routeIs('parking.search')">
-                        {{ __('LPR') }}
+                        {{ __('SIV') }}
                     </x-nav-link>
                 </div>
             </div>
