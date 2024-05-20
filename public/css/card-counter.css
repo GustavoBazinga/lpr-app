@@ -1,25 +1,25 @@
 .right-border {
-    border-right: 1px solid #e0e0e0;
+    border-right: 1px solid #000;
 }
 
 .counter {
     font-size: 20px;
     font-weight: 600;
-    color: white;
+
     text-align: center;
 }
 
 .counter-number {
     font-size: 40px;
     font-weight: 600;
-    color: white;
+
     text-align: center;
 }
 
 .counter-label {
     font-size: 20px;
     font-weight: 600;
-    color: white;
+
     text-align: center;
     text-decoration: None;
 }

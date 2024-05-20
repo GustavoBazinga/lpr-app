@@ -25,16 +25,6 @@
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    FTP image: {{ $ftpImage }}
-                    {{-- @if(!empty($ftpImage))
-                        <img src="{{ $ftpImage }}" alt="FTP Image">
-                    @else
-                        <p>No image found at the provided FTP location.</p>
-                    @endif --}}
-                </div>
-            </div>
         </div>
     </div>
 </x-app-layout>
