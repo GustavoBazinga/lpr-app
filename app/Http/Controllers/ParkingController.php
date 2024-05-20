@@ -67,11 +67,12 @@ class ParkingController extends Controller
         $response = [];
         foreach ($data as $item) {
             //Split date by T
-            $temp_date = explode('T', $item->entry_date);
+            $temp_date = explode(' ', $item->entry_date);
             $temp_date[1] = str_replace('-', ':', $temp_date[1]);
-            $date = $temp_date[0] . "T" . $temp_date[1];
+            $date = $temp_date[0] . " " . $temp_date[1];
             $date = new Datetime($date);
             $date = $date->format('H:i:s d/m/Y');
+
             $response[] = [
                 //Date format HH:mm:ss dd/MM/yyyy
                 'entry_date' => $date,

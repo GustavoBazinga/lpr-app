@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
 
-     protected $connection = 'sqlite';
+     protected $connection = 'mysql';
 
     protected $fillable = [
         'name',

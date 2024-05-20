@@ -17,7 +17,6 @@ class ProfileController extends Controller
      */
     public function edit(Request $request)
     {
-        return FtpController::ftpTest();
         return view('profile.edit', [
             'user' => $request->user(),
             

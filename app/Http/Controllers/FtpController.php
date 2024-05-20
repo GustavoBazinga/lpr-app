@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class FtpController extends Controller
 {
+
     public static function ftpTest()
     {
         try {
@@ -22,6 +23,7 @@ class FtpController extends Controller
             return false; // Falha na conexão
         }
     }
+
     public static function getImage($imageName)
     {
         try {

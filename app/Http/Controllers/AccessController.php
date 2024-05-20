@@ -15,16 +15,18 @@ class AccessController extends Controller
     public static function findAccessByTIme($time)
     {
         //Split the time into date and time
-        $time = explode('T', $time);
+        $time = explode(' ', $time);
         $date = $time[0];
         $time = $time[1];
         //Replace - with : in time
         $time = str_replace('-', ':', $time);
-        $datetime = $date . 'T' . $time;
-        $time = strtotime($time);
+        $datetime = $date . ' ' . $time;
+        $time = strtotime($datetime);
         //Get all accesses with the given time 15 seconds ago and later than time
-        $startTime = date('Y-m-d\TH:i:s', $time - 15);
-        $endTime = date('Y-m-d\TH:i:s', $time + 15);
+
+        $startTime = date('Y-m-d H:i:s', $time - 15);
+        $endTime = date('Y-m-d H:i:s', $time + 15);
+
 
         $data = Access::whereBetween('Date', [$startTime, $endTime])->whereIn('Ratchet', ['1116448', '5124723', '7061845'])->get();
 
